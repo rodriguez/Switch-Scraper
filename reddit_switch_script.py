@@ -2,19 +2,15 @@ import praw
 from twilio.rest import Client
 import json 
 from json_handler import post_dic
+from creds import *
 
-account_sid = "AC68ecdb4047ae378eececca3f44006f66"
-auth_token = "da1b49fcccca917c0ed00379c7e16447"
 client = Client(account_sid, auth_token)
-
-cid = 'FlluXmW8byy8YQ'
-secret = 'NL3t0HaJuf0vKNLbE93CZ6bxPK0'
 
 reddit = praw.Reddit(client_id=cid,
                      client_secret=secret,
-                     password='paugasol16',
+                     password=password,
                      user_agent='testscript by /u/Arod16',
-                     username='Arod16')
+                     username=username)
 
 def dic_deal(title):
 	global post_dic
