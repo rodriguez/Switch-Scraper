@@ -28,10 +28,10 @@ def clean(title):
 			string += char
 	return string
 
-def twilioApi(title, link):
+def twilioApi(title, link, number):
 	global client
 	message = client.messages.create(
-    to="+12033088233", 
+    to="+1" + number, 
     from_="+16232445451",
     body=title + " --> " + link)
 	print(message.sid)
@@ -54,6 +54,7 @@ def parser(title):
 	return True
 
 i = 0
+number = input("What is your number?: ")
 
 while True:
 	i += 1
@@ -65,7 +66,7 @@ while True:
 		flag = parser(clean_title)
 		if flag == False:
 			post_dic[clean_title] = True
-			twilioApi(title, link)
+			twilioApi(title, link, number)
 	print("Running: ", i, "time(s)")
 
 with open("nsd_posts.json", "w") as f:
