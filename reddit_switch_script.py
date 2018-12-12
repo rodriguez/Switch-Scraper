@@ -15,7 +15,9 @@ reddit = praw.Reddit(client_id=cid,
 def dic_deal(title):
 	global post_dic
 	if title not in post_dic:
-		post_dic[title.lower()] = False
+		post_dic[title] = False
+		print("New Post to Dic: ", title)
+		print(post_dic[title])
 
 def clean(title):
 	string = ""
@@ -68,8 +70,7 @@ while True:
 			post_dic[clean_title] = True
 			twilioApi(title, link, number)
 	print("Running: ", i, "time(s)")
-
-with open("nsd_posts.json", "w") as f:
-	f.write(json.dumps(post_dic))
+	with open("nsd_posts.json", "w") as f:
+		f.write(json.dumps(post_dic))
 
 
