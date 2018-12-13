@@ -11,16 +11,12 @@ def updateMongo():
 		dic = {"name": mongoCleaner(sub), "seen": post_dic[sub]}
 		db.col.insert_one(dic)
 # pp = pprint.pprint
-client = MongoClient()
+db_client = MongoClient()
 
-db = client.pymongo_db
-col = db.pymongo_col
+db = db_client.switch_db
+col = db.deals
 
 
-item = db.col.find_one({"error": "1"})
-pp(item)
-if item == None:
-	print("not in there")
-else:
-	print("in there")
+
+print(db.col.find_one())
 

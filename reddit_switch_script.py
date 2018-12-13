@@ -17,12 +17,9 @@ reddit = praw.Reddit(client_id=cid,
                      user_agent='testscript by /u/Arod16',
                      username=username)
 
-# db_client = MongoClient()
-def dic_deal(title):
-	global post_dic
-	if title not in post_dic:
-		post_dic[title] = False
-		print("New Post to Dic: ", title)
+db_client = MongoClient()
+db = db_client.switch_db
+deals = db.deals
 
 def clean(title):
 	string = ""
@@ -44,9 +41,9 @@ def twilioMessage(title, link, number):
     body=title + " --> " + link)
 	print(message.sid)
 
-def parser(title):
-	if post_dic[title] == True:
-		return True
+def parser_for_valid_deal(title, in_db):
+	if in_db == True:
+		return False # we already saw this; if we didn't act on it before, we're not going to now
 	if "switch" in title:
 		money_indices = []
 		iter_title = title
@@ -62,14 +59,18 @@ def parser(title):
 		if len(money_indices) != 0:
 			price = max(money_indices)
 			if price > 200:
-				return False
-	return True
+				return True # new deal with target price (probably a Switch deal)
+	return False # new deal but probably not a Switch deal (price not high enough)
 
-# def updateDB(clean, old, link):
-# 	global db_client
-# 	db = db_client.pymongo_db
-# 	col = db.pymongo_col
-	
+def updateDB(clean, old, link):
+	global db_client, db, deals
+	pair = {"title": clean}
+	lookup = db.deals.find_one(pair)
+	if lookup == None:
+		doc = {"title": clean, "old_title": old, "link": link}
+		db.deals.insert_one(doc)
+		return False
+	return True	
 
 i = 0
 number = input("What is your number? ")
@@ -80,15 +81,11 @@ while True:
 		title = post.title
 		link = post.shortlink
 		clean_title = clean(title)
-		dic_deal(clean_title)
-		flag = parser(clean_title)
-		if flag == False:
-			post_dic[clean_title] = True
-			twilioMessage(title, link, number)
-		# updateDB(clean_title, title, link)
+		in_db = updateDB(clean_title, title, link)
+		is_valid_deal = parser_for_valid_deal(clean_title, in_db)
+		if is_valid_deal == True:
+			print("found a valid deal", title)
+			# twilioMessage(title, link, number)
 	print("Running: ", i, "time(s)")
-	with open("nsd_posts.json", "w") as f:
-		f.write(json.dumps(post_dic))
-	time.sleep(30)
-
+	# time.sleep(30)
 
