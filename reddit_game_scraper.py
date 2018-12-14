@@ -19,7 +19,7 @@ reddit = praw.Reddit(client_id=cid,
 
 db_client = MongoClient()
 db = db_client.switch_db
-deals = db.deals
+games = db.games
 
 def clean(title):
 	string = ""
@@ -41,10 +41,10 @@ def twilioMessage(title, link, number):
     body=title + " --> " + link)
 	print(message.sid)
 
-def parser_for_valid_deal(title, in_db):
+def parser_for_valid_deal(title, in_db, game):
 	if in_db == True:
 		return False # we already saw this; if we didn't act on it before, we're not going to now
-	if "switch" in title:
+	if game in title:
 		money_indices = []
 		iter_title = title
 		money_index = iter_title.find("$")
@@ -58,23 +58,25 @@ def parser_for_valid_deal(title, in_db):
 			money_index = iter_title.find("$", ints)
 		if len(money_indices) != 0:
 			price = max(money_indices)
-			if price > 200:
+			if price < 60 and price > 15:
 				return True # new deal with target price (probably a Switch deal)
 	return False # new deal but probably not a Switch deal (price not high enough)
 
 def updateDB(clean, old, link):
-	global db_client, db, deals
+	global db_client, db, games
 	pair = {"title": clean}
-	lookup = db.deals.find_one(pair)
+	lookup = db.games.find_one(pair)
 	if lookup == None:
 		doc = {"title": clean, "old_title": old, "link": link}
-		db.deals.insert_one(doc)
+		db.games.insert_one(doc)
 		print("inserted ", link)
 		return False
 	return True	
 
 i = 0
-number = input("What is your number? ")
+# number = input("What is your number? ")
+number = "2033088233"
+game = input("What game deal would you like to look for? ")
 
 while True:
 	i += 1
@@ -83,7 +85,7 @@ while True:
 		link = post.shortlink
 		clean_title = clean(title)
 		in_db = updateDB(clean_title, title, link)
-		is_valid_deal = parser_for_valid_deal(clean_title, in_db)
+		is_valid_deal = parser_for_valid_deal(clean_title, in_db, game)
 		if is_valid_deal == True:
 			print("found a valid deal: ", title)
 			twilioMessage(title, link, number)
