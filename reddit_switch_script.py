@@ -1,6 +1,6 @@
 import praw
 from twilio.rest import Client
-import json 
+import json
 from json_handler import post_dic
 from creds import *
 import time
@@ -36,7 +36,7 @@ def clean(title):
 def twilioMessage(title, link, number):
 	global twi_client
 	message = twi_client.messages.create(
-    to="+1" + number, 
+    to="+1" + number,
     from_="+16232445451",
     body=title + " --> " + link)
 	print(message.sid)
@@ -71,7 +71,7 @@ def updateDB(clean, old, link):
 		db.deals.insert_one(doc)
 		print("inserted ", link)
 		return False
-	return True	
+	return True
 
 i = 0
 number = input("What is your number? ")
@@ -90,4 +90,3 @@ while True:
 			print("sent message")
 	print("Running: ", i, "time(s)")
 	time.sleep(30)
-

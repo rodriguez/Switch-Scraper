@@ -1,0 +1,90 @@
+body{
+    background-color: #EAEAEA;
+    font-family: 'Titillium Web', sans-serif;
+    margin: 0 5% 0 5%;
+}
+
+header{
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    text-align: center;
+    margin: 0 0 3em 0;
+}
+
+footer{
+    min-height: 10vh;
+}
+
+p{
+    font-size: calc(12px + (26 - 12) * ((100vw - 300px) / (1600 - 300)));
+}
+
+h2{
+    font-size: calc(24px + (38 - 24) * ((100vw - 300px) / (1600 - 300)));
+}
+
+header img{
+    width: 350px;
+}
+
+header h2{
+    margin-bottom: 0;
+}
+
+.bold{
+    font-weight: bold;
+}
+
+form{
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    padding: 0 30% 0 30%;
+    min-height: 35vh;
+}
+
+.flex-center{
+    display: flex;
+    align-items: center;
+}
+
+.left-button, .right-button{
+    width: 15em;
+    height: 2em;
+    color: #FFF;
+    font-size: 16px;
+    border-radius: 5%;
+    outline: none;
+    border: 1.5px solid #FFF; 
+    text-align: center;
+}
+
+.left-button{
+    background-color: #0AB9E6;
+}
+
+.right-button{
+    background-color: #FF3C28;
+}
+
+.text-box{
+    width: 20em;
+    height: 2em;
+    border-radius: 5%;
+    margin-right: 5px;
+}
+
+
+@media screen and (max-width: 500px) {
+    .flex-center{
+        flex-flow: column;
+    }
+    
+    
+}
+
+
+
+
+
