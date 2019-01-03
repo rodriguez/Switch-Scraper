@@ -1,7 +1,5 @@
 import praw
 from twilio.rest import Client
-import json 
-from json_handler import post_dic
 from creds import *
 import time
 
