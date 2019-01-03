@@ -86,7 +86,7 @@ while True:
 		is_valid_deal = parser_for_valid_deal(clean_title, in_db, game)
 		if is_valid_deal == True:
 			print("found a valid deal: ", title)
-			twilioMessage(title, link, number)
+			# twilioMessage(title, link, number)
 			print("sent message")
 	print("Running: ", i, "time(s)")
 	time.sleep(30)

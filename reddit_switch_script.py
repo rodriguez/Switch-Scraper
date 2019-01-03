@@ -39,25 +39,31 @@ def twilioMessage(title, link, number):
     body=title + " --> " + link)
 	print(message.sid)
 
+def price_parser(title):
+	price = 0
+	money_indices = []
+	iter_title = title
+	money_index = iter_title.find("$")
+	while money_index != -1:
+		ints = money_index+1
+		string = ""
+		while ints < len(iter_title) and iter_title[ints].isdigit() == True:
+			string += iter_title[ints]
+			ints += 1
+		if string != "":
+			money_indices.append(int(string))
+		money_index = iter_title.find("$", ints)
+	if len(money_indices) != 0:
+		price = max(money_indices)
+	return price
+
 def parser_for_valid_deal(title, in_db):
 	if in_db == True:
 		return False # we already saw this; if we didn't act on it before, we're not going to now
 	if "switch" in title:
-		money_indices = []
-		iter_title = title
-		money_index = iter_title.find("$")
-		while money_index != -1:
-			ints = money_index+1
-			string = ""
-			while ints < len(iter_title) and iter_title[ints].isdigit() == True:
-				string += iter_title[ints]
-				ints += 1
-			money_indices.append(int(string))
-			money_index = iter_title.find("$", ints)
-		if len(money_indices) != 0:
-			price = max(money_indices)
-			if price > 200:
-				return True # new deal with target price (probably a Switch deal)
+		price = price_parser(title)
+		if price > 200:
+			return True
 	return False # new deal but probably not a Switch deal (price not high enough)
 
 def updateDB(clean, old, link):
@@ -72,19 +78,26 @@ def updateDB(clean, old, link):
 	return True
 
 i = 0
-number = input("What is your number? ")
+# number = input("What is your number? ")
 
-while True:
-	i += 1
-	for post in reddit.subreddit('NintendoSwitchDeals').new():
-		title = post.title
-		link = post.shortlink
-		clean_title = clean(title)
-		in_db = updateDB(clean_title, title, link)
-		is_valid_deal = parser_for_valid_deal(clean_title, in_db)
-		if is_valid_deal == True:
-			print("found a valid deal: ", title)
-			twilioMessage(title, link, number)
-			print("sent message")
-	print("Running: ", i, "time(s)")
-	time.sleep(30)
+def run():
+	global i
+	packet = []
+	while True:
+		for post in reddit.subreddit('NintendoSwitchDeals').new():
+			i += 1
+			title = post.title
+			link = post.shortlink
+			clean_title = clean(title)
+			price = price_parser(clean_title)
+			in_db = updateDB(clean_title, title, link)
+			is_valid_deal = parser_for_valid_deal(clean_title, in_db)
+			packet.append([title, price, link])
+			if i == 5:
+				return packet
+			if is_valid_deal == True:
+				print("found a valid deal: ", title)
+				# twilioMessage(title, link, number)
+				print("sent message")
+		print("Running: ", i, "time(s)")
+		# time.sleep(30)

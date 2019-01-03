@@ -1,4 +1,4 @@
-<!DOCTYPE>
+<!DOCTYPE html>
 <html>
     <head> 
         <title> Switch Scrapper </title>
@@ -25,8 +25,38 @@
             <p> OR </p>
             <input type="submit" value="Search for Switch deals" class="right-button">
         </form> 
-
-
+		{% if query %}
+		<table style="width:100%">
+			{% if game %}
+			<tr>
+			  <th>Game</th>
+			  <th>Price</th> 
+			  <th>Link</th>
+			</tr>
+			<tr>
+			  <td>{{name}}</td>
+			  <td>{{price}}</td> 
+			  <td>{{link}}</td>
+			</tr>
+			{% else %}
+			<tr>
+				<th>Console Listing</th>
+				<th>Price</th> 
+				<th>Link</th>
+			  </tr>
+			  {% for listing in posts%}
+			  <!-- {{listing}} -->
+			  <tr>
+				{% for elem in listing %}
+				<td>{{elem}}</td>
+				{% endfor %}
+			  </tr>
+			  {% endfor %}
+			{% endif %}
+		</table>
+		{% else %}
+		<p>error</p>
+		{% endif %}
         <footer>
             <p> Back-end by Andrés Rodríguez <br> Front-end by Brandon Chen </p>
         </footer>
