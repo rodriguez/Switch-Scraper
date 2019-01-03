@@ -1,6 +1,6 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 import reddit_switch_script as switch
-
+import reddit_game_scraper as games
 app = Flask(__name__)
 app.debug = True
 
@@ -8,12 +8,11 @@ app.debug = True
 def index():
 	return render_template("index.html")
 
-@app.route("/<string:name>")
-def game(name):
-	name = switch.run()
-	price = 50
-	link = "www.google.com"
-	return render_template("index.html", query=True, game=True, name=name, price=price, link=link)
+@app.route("/game-search", methods=["POST"])
+def game_search():
+	name = request.form.get("lastname")
+	deals = games.run(name)
+	return render_template("index.html", query=True, game=True, posts=deals)
 @app.route("/switch")
 def switch_deals():
 	packet = switch.run()

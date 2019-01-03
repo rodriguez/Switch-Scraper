@@ -58,8 +58,8 @@ def price_parser(title):
 	return price
 
 def parser_for_valid_deal(title, in_db):
-	if in_db == True:
-		return False # we already saw this; if we didn't act on it before, we're not going to now
+	# if in_db == True:
+	# 	return False # we already saw this; if we didn't act on it before, we're not going to now
 	if "switch" in title:
 		price = price_parser(title)
 		if price > 200:
@@ -98,6 +98,7 @@ def run():
 			if is_valid_deal == True:
 				print("found a valid deal: ", title)
 				# twilioMessage(title, link, number)
+				packet.append([title, price, link])
 				print("sent message")
 		print("Running: ", i, "time(s)")
 		# time.sleep(30)

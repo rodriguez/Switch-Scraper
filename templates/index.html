@@ -17,7 +17,7 @@
         </header>
 
 
-        <form action="" method="post">
+        <form action="{{url_for('game_search')}}" method="post">
             <div class="flex-center">
                 <input type="text" name="lastname" placeholder="Search" class="text-box">
                 <input type="submit" value="Search for game deals" class="left-button">
@@ -34,23 +34,31 @@
 			  <th>Link</th>
 			</tr>
 			<tr>
-			  <td>{{name}}</td>
+			{% for listing in posts %}
+			  <!-- {{listing}} -->
+			<tr>
+				{% for elem in listing %}
+				<td>{{elem}}</td>
+				{% endfor %}
+			</tr>
+			{% endfor %}
+			  <!-- <td>{{name}}</td>
 			  <td>{{price}}</td> 
 			  <td>{{link}}</td>
-			</tr>
+			</tr> -->
 			{% else %}
 			<tr>
 				<th>Console Listing</th>
 				<th>Price</th> 
 				<th>Link</th>
-			  </tr>
+			</tr>
 			  {% for listing in posts%}
 			  <!-- {{listing}} -->
-			  <tr>
+			<tr>
 				{% for elem in listing %}
 				<td>{{elem}}</td>
 				{% endfor %}
-			  </tr>
+			</tr>
 			  {% endfor %}
 			{% endif %}
 		</table>
