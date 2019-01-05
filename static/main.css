@@ -75,6 +75,53 @@ form{
     margin-right: 5px;
 }
 
+/************************/
+
+table.BlueCols {
+  background-color: #398AA4;
+  width: 100%;
+  text-align: center;
+  border-collapse: collapse;
+}
+table.BlueCols td, table.BlueCols th {
+  border: 1px solid #FFFFFF;
+  padding: 7px 7px;
+}
+table.BlueCols tbody td {
+  font-size: 12px;
+  font-weight: bold;
+  color: #FFFFFF;
+}
+table.BlueCols thead {
+  background: #FF3C28;
+  border-bottom: 2px solid #FFFFFF;
+}
+table.BlueCols thead th {
+  font-size: 14px;
+  font-weight: bold;
+  color: #FFFFFF;
+  text-align: center;
+  border-left: 2px solid #FFFFFF;
+}
+table.BlueCols thead th:first-child {
+  border-left: none;
+}
+
+table.BlueCols tfoot td {
+  font-size: 11px;
+}
+table.BlueCols tfoot .links {
+  text-align: right;
+}
+table.BlueCols tfoot .links a{
+  display: inline-block;
+  background: #FFFFFF;
+  color: #398AA4;
+  padding: 2px 8px;
+  border-radius: 5px;
+}
+
+
 
 @media screen and (max-width: 500px) {
     .flex-center{
